@@ -1,4 +1,4 @@
-#Introduction [![Jet App Badge](https://img.shields.io/badge/JET-App-blue.svg)](https://github.com/Juniper/JetApp-Store)
+#Introduction
 
 This Dynamic COS App monitors satellite site's modems in 10 seconds interval and detects the changes in modem codes, error noise ratios
 and symbol rates. Then computes new COS values based on changes in modem values and generate cos configurations and dynamically pushes
