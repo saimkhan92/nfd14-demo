@@ -1,0 +1,19 @@
+
+
+telegraf:
+  image: juniper/nfd14-demo-oc-telemetry
+  command: /go/bin/telegraf -debug
+  volumes:
+   - ./telegraf-influxdb.toml:/etc/telegraf/telegraf.conf
+   - /etc/localtime:/etc/localtime
+  links:
+   - influxdb
+
+influxdb:
+  image: influxdb:1.1-alpine
+  volumes:
+   - ./dashboard.json:/src/dashboards/dashboard.json
+   - /etc/localtime:/etc/localtime
+  ports:
+   - "8083:8083"
+   - "8086:8086"
