@@ -9,6 +9,17 @@ telegraf:
   links:
    - influxdb
 
+grafana:
+  image: grafana/grafana:4.1.1
+  environment:
+   - "GF_SECURITY_ADMIN_PASSWORD=admin"
+  volumes:
+   - /etc/localtime:/etc/localtime
+  ports:
+   - "3000:3000"
+  links:
+   - influxdb
+
 influxdb:
   image: influxdb:1.1-alpine
   volumes:

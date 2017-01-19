@@ -43,9 +43,18 @@ You need to customize telegraf configuration file (`telegraf-influxdb`) to at le
 
 ## Start the demo
 
-To start the demo, you need to execute `make start-influxdb`. It will start 2 containers:
+**start the containers**
+To start the demo, you need to execute `make start-influxdb`. It will start 3 containers:
 1. Influxdb
 2. Telegraf
+3. Grafana
+
+**initialize grafana**
+Once the containers have started, you need to create a datasource in Grafana by running `make grafana-create-source`
+
+You can then log into grafana on port `3000` with:
+- login: `admin`
+- password: `admin`
 
 ## Verify that everything is running as expected
 
