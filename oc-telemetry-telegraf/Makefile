@@ -12,3 +12,9 @@ grafana-create-source:
 
 stop-influxdb:
 	docker-compose -f docker-compose-influx.yml down
+
+start-aws: build
+	docker-compose -f docker-compose-aws.yml up -d
+
+stop-aws:
+	docker-compose -f docker-compose-aws.yml down
