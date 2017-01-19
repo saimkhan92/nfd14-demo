@@ -32,7 +32,7 @@ set system services extension-service notification allow-clients address 0.0.0.0
 
 ## Customize the telegraf configuration file
 
-You need to customize telegraf configuration file (`telegraf-influxdb`) to at least indicate the IP address of your Junos device (line 84)
+You need to customize telegraf configuration file (`telegraf-influxdb.toml`) to at least indicate the IP address of your Junos device (line 84)
 
 ```
 [[inputs.openconfig_telemetry]]
@@ -79,3 +79,31 @@ here is an example of logs that indicate that everything is working as expected
 ```
 make stop-influxdb
 ```
+
+# Demo with AWS
+
+## Customize the telegraf configuration file
+
+You need to customize telegraf configuration file (`telegraf-aws.toml`) to:
+- indicate your AWS credentials keys (access_key & secret_key) (line 65/66)
+- indicate the IP address of your Junos device (line 82)
+
+```
+access_key = "<access_key>"
+secret_key = "<secret_key>"
+```
+
+```
+[[inputs.openconfig_telemetry]]
+
+  server = "<device IP>:50051"
+```
+> Optional: You can also change the list of sensors that you want to collect starting
+
+## See the date in AWS
+
+Once telegraf is running, you should be able to see the data in the AWS Console.
+
+[AWS Console for CloudWatch](https://us-west-2.console.aws.amazon.com/cloudwatch/home?region=us-west-2)
+
+> By default, data will be send to the region `us-west-2`, you can change that in telegraf configuration file

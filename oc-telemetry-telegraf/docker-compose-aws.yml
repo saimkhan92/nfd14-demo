@@ -1,0 +1,7 @@
+
+telegraf:
+  image: juniper/nfd14-demo-oc-telemetry
+  command: /go/bin/telegraf -debug
+  volumes:
+   - ./telegraf-aws.toml:/etc/telegraf/telegraf.conf
+   - /etc/localtime:/etc/localtime
