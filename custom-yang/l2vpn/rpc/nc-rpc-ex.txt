@@ -1,0 +1,3 @@
+<rpc>
+  <get-my-l2vpn-info/>
+</rpc>

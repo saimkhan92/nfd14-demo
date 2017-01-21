@@ -1,0 +1,101 @@
+module rpc-get-my-l2vpn {
+  namespace "http://yang.juniper.net/yang/1.1/jrpc/l2vpn/state";
+  prefix jrpc-l2vpn;
+
+  import junos-extension {
+    prefix junos;
+  }
+  import junos-extension-odl {
+    prefix junos-odl;
+  }
+
+  rpc get-my-l2vpn-info {
+     description "Junos custom RPC example";
+
+     junos:command "show my-l2vpn-info ";
+
+     junos:action-execute {
+       junos:script "rpc-get-my-l2vpn.py";
+     }
+
+     output {
+       container my-l2vpn {
+          leaf instance-name {
+            junos-odl:template "Customer Name - %s \n-------------------------------------------\n                   Local    Remote\n-------------------------------------------";
+            type string;
+          }
+          leaf local-connection-id {
+            junos-odl:template "Connection ID     :    %s";
+            type string;
+          }                   
+          leaf remote-connection-id {
+            type string;
+          }                   
+          leaf local-connection-type {
+            junos-odl:template "Connection Type   :    %s";
+            type string;
+          }                   
+          leaf remote-connection-type {
+            type string;
+          }                   
+          leaf local-connection-status {
+            junos-odl:template "Connection Status :    %s";
+            type string;
+          }                   
+          leaf remote-connection-status {
+            type string;
+          }                   
+          leaf local-inbound-label {
+            junos-odl:template "Inbound Label     :    %s";
+            type string;
+          }                   
+          leaf remote-inbound-label {
+            type string;
+          }                   
+          leaf local-outbound-label {
+            junos-odl:template "Outbound Label    :    %s";
+            type string;
+          }                   
+          leaf remote-outbound-label {
+            type string;
+          }                   
+        container my-l2vpn-format {
+          junos-odl:cli-format;
+          junos-odl:header "L2VPN State\n";
+          junos-odl:picture "@
+@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<@<<<<<<<<<<<<<<<
+@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<@<<<<<<<<<<<<<<<
+@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<@<<<<<<<<<<<<<<<
+@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<@<<<<<<<<<<<<<<<
+@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<@<<<<<<<<<<<<<<<
+";
+          //junos-odl:indent 5;
+
+          junos-odl:line {
+            junos-odl:field "instance-name";
+          }
+          junos-odl:line {
+            junos-odl:field "local-connection-id";
+            junos-odl:field "remote-connection-id";
+          }
+          junos-odl:line {
+            junos-odl:field "local-connection-type";
+            junos-odl:field "remote-connection-type";
+          }
+          junos-odl:line {
+            junos-odl:field "local-connection-status";
+            junos-odl:field "remote-connection-status";
+          }
+          junos-odl:line {
+            junos-odl:field "local-inbound-label";
+            junos-odl:field "remote-inbound-label";
+          }
+          junos-odl:line {
+            junos-odl:field "local-outbound-label";
+            junos-odl:field "remote-outbound-label";
+          }
+        }
+      }
+    }
+  }
+}

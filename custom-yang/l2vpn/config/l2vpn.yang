@@ -1,0 +1,65 @@
+module l2vpn {
+
+  yang-version "1";
+  namespace "http://yang.juniper.net/yang/demo/l2vpn";
+  prefix "l2vpn";
+
+  organization
+    "Juniper Networks";
+
+  description
+    "A demo custom Yang module for L2VPN service";
+
+  revision "2016-07-01" {
+    description
+      "Initial revision";
+    }
+
+  container l2vpn {
+    description "Configure L2VPN service";
+    
+    container global {
+      description "L2VPN global parameters";
+      leaf local-site-identifier {
+        description "Local site identifier";
+        type string;
+        mandatory true;
+      }
+      leaf rd-prefix {
+        description "The route-distinguisher prefix";
+        type string;
+        mandatory true;
+      }
+      leaf rt-prefix {
+        description "The route-target prefix";
+        type string;
+        mandatory true;
+      }
+      leaf physical-interface {
+        description "Physical interface name";
+        type string;
+        mandatory true;
+      }
+    }
+    
+    list customer {
+      description "L2VPN customer information";
+      key "name";
+      leaf name {
+        description "Customer name";
+        type string;
+      }
+      leaf remote-site-identifier {
+        description "Remote site identifier";
+        type string;
+        mandatory true;
+      }
+      leaf vlan-id {
+        description "VLAN ID on which customer is connected";
+        type uint32;
+        mandatory true;
+      }
+    }    
+  }
+}
+

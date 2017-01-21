@@ -1,0 +1,7 @@
+set l2vpn:l2vpn global local-site-identifier 1
+set l2vpn:l2vpn global rd-prefix 4000
+set l2vpn:l2vpn global rt-prefix 4001
+set l2vpn:l2vpn global physical-interface ge-0/0/0
+set l2vpn:l2vpn customer l2vpn-cust-1 remote-site-identifier 2
+set l2vpn:l2vpn customer l2vpn-cust-1 vlan-id 1
+

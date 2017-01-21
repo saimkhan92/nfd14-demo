@@ -1,0 +1,80 @@
+version 1.0;
+
+ns junos = "http://xml.juniper.net/junos/*/junos";
+ns xnm = "http://xml.juniper.net/xnm/1.1/xnm";
+ns jcs = "http://xml.juniper.net/junos/commit-scripts/1.0";
+
+ns l2vpn_p = "http://yang.juniper.net/yang/demo/l2vpn";
+
+import "/var/db/scripts/import/junos.xsl";
+
+match configuration {
+  var $local-site = l2vpn_p:l2vpn/l2vpn_p:global/l2vpn_p:local-site-identifier;
+  var $rd-prefix = l2vpn_p:l2vpn/l2vpn_p:global/l2vpn_p:rd-prefix;
+  var $rt-prefix = l2vpn_p:l2vpn/l2vpn_p:global/l2vpn_p:rt-prefix;
+  var $physical-interface = l2vpn_p:l2vpn/l2vpn_p:global/l2vpn_p:physical-interface;
+  if (l2vpn_p:l2vpn) {
+    <transient-change> {
+      <interfaces> {
+        <interface> {
+          <name> $physical-interface;
+          <flexible-vlan-tagging>;
+          <encapsulation> "flexible-ethernet-services";
+          <description> "L2VPN interface";
+        }
+      }
+    }
+
+    for-each (l2vpn_p:l2vpn/l2vpn_p:customer) {
+      <transient-change> {
+        <interfaces> {
+          <interface> {
+            <name> $physical-interface;
+            <unit> {
+              <name> l2vpn_p:vlan-id;
+              <vlan-id> l2vpn_p:vlan-id;
+              <encapsulation> "vlan-ccc";
+              <family> {
+                <ccc>;
+              }
+            }
+          }
+        }
+      }
+    }
+    for-each (l2vpn_p:l2vpn/l2vpn_p:customer) {
+      <transient-change> {
+        <routing-instances> {
+          <instance> {
+            <name> l2vpn_p:name;
+            <instance-type> "l2vpn";
+            <interface> {
+              <name> $physical-interface _ "." _ l2vpn_p:vlan-id;
+            }
+            <route-distinguisher> {
+              <rd-type> $rd-prefix _ ":" _ l2vpn_p:vlan-id;
+            }
+            <vrf-target> {
+              <community> "target:" _ $rt-prefix _ ":" _ l2vpn_p:vlan-id;
+            }
+            <protocols> {
+              <l2vpn> {
+                <encapsulation-type> "ethernet-vlan";
+                <no-control-word>;
+                <site> {
+                  <name> "l2vpn-site-" _ l2vpn_p:vlan-id;
+                  <site-identifier> $local-site;
+                  <interface> {
+                    <name> $physical-interface _ "." _ l2vpn_p:vlan-id;
+                    <remote-site-id> l2vpn_p:remote-site-identifier;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}    
+
